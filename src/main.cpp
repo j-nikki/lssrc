@@ -96,9 +96,8 @@ inline icon_type icon([[maybe_unused]] int fd)
         return (SC(faccessat, fd, ps[I].f.data(), F_OK) == 0) ? ps[I].icn : icon<I + 1>(fd);
 }
 
-[[noreturn]] icon_type icon(...) { std::unreachable(); }
 template <size_t = 0>
-inline auto icon([[maybe_unused]] linux_dirent64 &x)
+inline auto icon(linux_dirent64 &x)
 {
     auto const [... is]       = util::mkidx_t<ps.size() - 1>{};
 

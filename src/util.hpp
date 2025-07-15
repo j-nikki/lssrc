@@ -77,11 +77,6 @@ void shell_sort(I f, S l, C c = {}, P p = {})
 template <size_t N>
 struct string : std::array<char, N> {
     consteval string(char const (&cs)[N + 1]) { std::ranges::copy_n(cs, N, this->data()); }
-    consteval string(std::ranges::input_range auto &&...rs)
-    {
-        auto it = this->begin();
-        ((it = std::ranges::copy(rs, it).out), ...);
-    }
 };
 template <size_t N>
 string(char const (&cs)[N]) -> string<N - 1>;
