@@ -221,8 +221,6 @@ error:
     SC(exit, 1);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
 [[noreturn, gnu::naked]] void _start()
 {
     asm volatile( //
@@ -230,5 +228,4 @@ error:
         "lea rsi, [rsp+8]\n"
         "call main\n");
 }
-#pragma GCC diagnostic pop
 }
