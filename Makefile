@@ -26,9 +26,6 @@ endif
 build/compile_commands.json: $(json)
 	@mkdir -p build
 	jq -s '.' $^ > $@
-build/%.json: src/%.c
-	@mkdir -p build
-	@echo '{"directory":"$(PWD)","command":"$(CC) $(subst ",'\\\\\\"',$(CFLAGS) -DCLANGD) -c -o a.o $^","file":"$^"}'>$@
 build/%.json: src/%.cpp
 	@mkdir -p build
 	@echo '{"directory":"$(PWD)","command":"$(CXX) $(subst ",'\\\\\\"',$(CXXFLAGS) -DCLANGD) -c -o a.o $^","file":"$^"}'>$@

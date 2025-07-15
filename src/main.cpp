@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <array>
+#include <dirent.h>
 #include <fcntl.h>
 #include <immintrin.h>
 #include <numeric>
@@ -165,6 +166,7 @@ extern "C" {
             auto &entry = *(linux_dirent64 *)(void *)(g_buf + pos);
             DEFER [&] { pos += entry.d_reclen; };
             if (entry.d_name[0] == '.') continue;
+            if (entry.d_type != DT_DIR) continue;
             auto const sfd = (int)SC(openat, rfd, entry.d_name, O_DIRECTORY | O_RDONLY | O_NOATIME);
             if (sfd == -1) continue;
             DEFER [=] { SC(close, sfd); };

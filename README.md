@@ -12,6 +12,8 @@ $ lssrc ~/src
 🦀 rustlings
 ```
 
+Build with `make`.
+
 Install with `make install`.
 
 Usage example, dwm keybinding:
