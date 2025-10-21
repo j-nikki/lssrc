@@ -7,6 +7,7 @@ AlignConsecutiveAssignments: AcrossEmptyLinesAndComments
 ReflowComments: true
 AlwaysBreakTemplateDeclarations: Yes
 BinPackParameters: true
+ForEachMacros: [io_uring_for_each_cqe]
 AlignConsecutiveMacros: AcrossEmptyLinesAndComments
 AllowShortCaseLabelsOnASingleLine: true
 BreakAfterReturnType: None

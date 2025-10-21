@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <array>
+#include <cstdio>
 #include <dirent.h>
 #include <fcntl.h>
 #include <immintrin.h>
+#include <linux/limits.h>
 #include <numeric>
 #include <stdint.h>
 #include <string_view>
@@ -166,9 +168,21 @@ extern "C" {
             auto &entry = *(linux_dirent64 *)(void *)(g_buf + pos);
             DEFER [&] { pos += entry.d_reclen; };
             if (entry.d_name[0] == '.') continue;
-            if (entry.d_type != DT_DIR) continue;
-            auto const sfd = (int)SC(openat, rfd, entry.d_name, O_DIRECTORY | O_RDONLY | O_NOATIME);
-            if (sfd == -1) continue;
+            int sfd;
+            switch (entry.d_type) {
+            case DT_DIR:
+                sfd = (int)SC(openat, rfd, entry.d_name, O_DIRECTORY | O_RDONLY | O_NOATIME);
+                break;
+            case DT_LNK: {
+                char buf[PATH_MAX];
+                auto const nlnk = (ssize_t)SC(readlinkat, rfd, entry.d_name, buf, PATH_MAX);
+                if (nlnk <= 0) continue;
+                sfd = (int)SC(open, buf, O_DIRECTORY | O_RDONLY | O_NOATIME);
+                break;
+            }
+            default: continue;
+            }
+            if (sfd < 0) continue;
             DEFER [=] { SC(close, sfd); };
 
             // buf

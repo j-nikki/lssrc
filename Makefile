@@ -1,8 +1,8 @@
 -include config.mk
 
-src := $(wildcard src/*.cpp)
-obj := $(patsubst src/%.cpp, build/%.o, $(src))
-json = $(patsubst src/%.cpp,build/%.json,$(src))
+src:=$(wildcard src/*.cpp)
+obj:=$(patsubst src/%.cpp, build/%.o, $(src))
+json=$(patsubst src/%.cpp,build/%.json,$(src))
 
 .PHONY: all clean install
 
@@ -19,8 +19,11 @@ $(PROG): $(obj)
 	$(CXX) $(LDFLAGS) $^ -o $@
 ifndef DEBUG
 ifneq (,$(shell which sstrip))
-	sstrip -z $(PROG)
+	sstrip -z $@
+else
+	strip -s $@
 endif
+	@wc -c $@
 endif
 
 build/compile_commands.json: $(json)

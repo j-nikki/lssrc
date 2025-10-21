@@ -66,7 +66,9 @@ void shell_sort(I f, S l, C c = {}, P p = {})
         for (auto i = gap; i < n; i++) {
             auto temp = f[i];
             size_t j;
-            for (j = i; j >= gap && c(std::invoke(p, temp), std::invoke(p, f[j - gap])); j -= gap) {
+            for (j = i;
+                 j >= gap && std::invoke(c, std::invoke(p, temp), std::invoke(p, f[j - gap]));
+                 j -= gap) {
                 f[j] = f[j - gap];
             }
             f[j] = temp;
