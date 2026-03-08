@@ -16,7 +16,7 @@ build/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(PROG): $(obj)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
 ifndef DEBUG
 ifneq (,$(shell which sstrip))
 	sstrip -z $@
